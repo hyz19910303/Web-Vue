@@ -5,10 +5,13 @@ import Router from 'vue-router'
 import App from './App'
 import home from './pages/Home'
 import main from './pages/Main'
+import baidu from './pages/baidu'
+import hello from '@/components/HelloWorld'
 
 Vue.config.productionTip = false
 Vue.use(Router)
 
+//var baidu ={}
 const routes=
 		[
 			{
@@ -16,7 +19,14 @@ const routes=
 				component:home
 			},
 			{
-				path:'/home',component:home
+				path:'/home',component:home,children:
+				[
+					{
+						path:'/welcome/index',component:hello
+					},{
+						path:'/druid/sql.html',component:baidu
+					}
+				]
 			},
 			{
 			  path:'/main',component:main

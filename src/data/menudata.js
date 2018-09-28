@@ -400,4 +400,16 @@ var  menu=[{
 	}
 ]
 
+var  path =function(menuparam){
+	var arrPath=[];
+	var navmunu=menuparam;
+	for(var i=0;i<navmunu.length;i++){
+		if(navmunu[i].urltype=='1' || navmunu[i].urltype==1){
+			this.parseMenus(navmunu[i]['submenus']);
+		}
+		if(navmunu[i].urltype=='2' || navmunu[i].urltype==2){
+			arrPath.push(navmunu[i].url);
+		}
+	}
+}
 export {menu};

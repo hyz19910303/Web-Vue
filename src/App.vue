@@ -3,7 +3,7 @@
     <!-- <img src="./assets/logo.png"> -->
     <router-view/>
     <router-link to="/home">Home页面</router-link>
-    <router-link to="/main">Main页面</router-link>
+    <!-- <router-link to="/main">Main页面</router-link> -->
   </div>
 </template>
 

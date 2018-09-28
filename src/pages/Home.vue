@@ -5,6 +5,7 @@
        	 		<navmenus :menus="menus"></navmenus>
 			</el-col>
 		</el-row>
+		<router-view/>
 	</div>
 </template>
 <script type="text/javascript">
