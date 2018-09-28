@@ -2,15 +2,7 @@
 	<div>
 		<el-row>
 			<el-col >
-				<el-menu
-	                default-active="1"
-	                class="el-menu-demo"
-	                text-color="#3969ca"
-	                mode="horizontal"
-	                background-color="#0A3155"
-	                active-text-color="#ffd04b">
-            	<navmenus  v-for="menu in menus" :key="menu.code" :menuitem="menu"></navmenus>
-       	 		</el-menu>
+       	 		<navmenus :menus="menus"></navmenus>
 			</el-col>
 		</el-row>
 	</div>
@@ -18,21 +10,16 @@
 <script type="text/javascript">
 	import Vue from 'vue'
 	import vueResource from 'vue-resource'
-	import ElementUI from 'element-ui'
-	import 'element-ui/lib/theme-chalk/index.css'
-	import navmenus from '@/components/NavMenus'
+	import navmenus from '@/components/menus/NavMenus'
 	//模拟数据
 	import { menu } from '../data/menudata.js'
-	//debugger
-	//console.log(menu)
 	Vue.use(vueResource)
-	Vue.use(ElementUI)
-	//Vue.use(navmenus)
+	
 	export default{
 		data(){
 			return{
 				data:[],
-				menus:[]
+				menus:menu
 			}
 		},
 		components:{
@@ -45,7 +32,7 @@
 			
 		},
 		mounted(){
-			this.menus=menu
+			//this.menus=menu
 			// this.$http.get('/api/list?time=111').then(response=>{
 			// 	//console.log(response)
 			// 	if(response.ok){

@@ -3,19 +3,19 @@
 	<template slot="title" >{{menuitem.name}}</template>
 	<el-menu-item  :index="submenu.url"   v-if="!submenu.submenus" v-for=" submenu in menuitem.submenus" :key="submenu.code" >{{submenu.name}}
 	</el-menu-item>
-		<navmenus :menuitem="submenu" v-if="submenu.submenus" v-for=" submenu in menuitem.submenus" :key="submenu.code"> </navmenus>
+		<submenus :menuitem="submenu" v-if="submenu.submenus" v-for=" submenu in menuitem.submenus" :key="submenu.code"> </submenus>
 	</el-submenu>
 	<el-menu-item  :index="menuitem.url?menuitem.url:menuitem.code"  v-else >{{menuitem.name}}</el-menu-item>
 </template>
 
 <script type="text/javascript">
 	import Vue from 'vue'
-    import ElementUI from 'element-ui'
-	import 'element-ui/lib/theme-chalk/index.css'
-	import navmenus from '@/components/NavMenus'
-	Vue.use(ElementUI)
+ //    import ElementUI from 'element-ui'
+	// import 'element-ui/lib/theme-chalk/index.css'
+	import submenus from '@/components/menus/SubMenus'
+	//Vue.use(ElementUI)
 	export default{
-		name:'navmenus',
+		name:'submenus',
 		data(){
 			return {
 
@@ -23,7 +23,7 @@
 		},
 		props:['menuitem'],
 		components: {
-	      navmenus
+	      submenus
 	    }
 	}
 	
