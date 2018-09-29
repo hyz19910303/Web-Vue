@@ -1,14 +1,9 @@
 <template>
 	<el-submenu :index="menuitem.url?menuitem.url:menuitem.code" v-if="menuitem.submenus&&menuitem.submenus.length>0">
-	   <template slot="title" >
-        <i v-if="menuitem.urltype==='1'&& menuitem.icon  && mode=='vertical'" :class="menuitem.icon"></i>
-        
-        <span slot="title">{{menuitem.name}}</span>
-    </template>
-	   <el-menu-item :index="submenu.url" v-if="!submenu.submenus" v-for=" submenu in menuitem.submenus" :key="submenu.code" >    {{submenu.name}}
-	   </el-menu-item>
-		  <submenus :menuitem="submenu" v-if="submenu.submenus" v-for=" submenu in menuitem.submenus" :key="submenu.code">
-     </submenus>
+	<template slot="title" >{{menuitem.name}}</template>
+	<el-menu-item  :index="submenu.url"   v-if="!submenu.submenus" v-for=" submenu in menuitem.submenus" :key="submenu.code" >{{submenu.name}}
+	</el-menu-item>
+		<submenus :menuitem="submenu" v-if="submenu.submenus" v-for=" submenu in menuitem.submenus" :key="submenu.code"> </submenus>
 	</el-submenu>
 	<el-menu-item  :index="menuitem.url?menuitem.url:menuitem.code"  v-else >{{menuitem.name}}</el-menu-item>
 </template>
@@ -17,7 +12,7 @@
 	import Vue from 'vue'
  //    import ElementUI from 'element-ui'
 	// import 'element-ui/lib/theme-chalk/index.css'
-	import submenus from '@/components/menus/horSubMenus'
+	import submenus from '@/components/menus/SubMenus'
 	//Vue.use(ElementUI)
 	export default{
 		name:'submenus',
@@ -26,7 +21,7 @@
 
 			}
 		},
-		props:['menuitem','mode'],
+		props:['menuitem'],
 		components: {
 	      submenus
 	    }
@@ -35,6 +30,7 @@
 </script>
 
 <style type="text/css">
+
 .el-row {
   margin-bottom: 20px;
   &:last-child {

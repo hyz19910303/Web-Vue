@@ -1,11 +1,14 @@
 <template>
 		<el-menu
+
         default-active="1"
-        class="el-menu-demo"
-        text-color="#FFF"
+        class="el-menu-demo "
+        text-color="#000000"
+        style="border-bottom: inherit"
         :mode="mode?mode:horizontal"
         @select="handleSelect"
-        background-color="#409EFF"
+        :background-color="backgroundcolor?backgroundcolor:'#fff'"
+        :collapse="mode=='vertical'?isCollapse:false"
         active-text-color="#ffd04b">
 		<submenus :mode='mode' v-for="menu in menus" :key="menu.code" :menuitem="menu"></submenus>
  		</el-menu>
@@ -29,6 +32,10 @@
 				type: Array,
 				required: true
 			},mode:{
+				type:String
+			},isCollapse:{
+				type:Boolean
+			},backgroundcolor:{
 				type:String
 			}
 		},
@@ -77,6 +84,11 @@
 </script>
 
 <style type="text/css">
-	
+.el-menu-vertical:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+  }
+  
+
 
 </style>
