@@ -19,17 +19,19 @@ const routes=
 				component:home
 			},
 			{
-				path:'/home',component:home,children:
-				[
+				path:'/home',
+				component:home,
+				children:[
 					{
-						path:'/welcome/index',component:hello
+						path:'welcome/index',component:hello
 					},{
-						path:'/druid/sql.html',component:baidu
+						path:'druid/sql.html',component:baidu
 					}
 				]
 			},
 			{
-			  path:'/main',component:main
+			  path:'/main',
+			  component:main
 			}
 		]
 const router = new Router({

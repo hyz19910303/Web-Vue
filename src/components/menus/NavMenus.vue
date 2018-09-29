@@ -1,17 +1,14 @@
 <template>
-	<div>
 		<el-menu
         default-active="1"
         class="el-menu-demo"
         text-color="#FFF"
-        mode="horizontal"
+        :mode="mode?mode:horizontal"
         @select="handleSelect"
-        background-color="#0A3155"
+        background-color="#409EFF"
         active-text-color="#ffd04b">
-		<submenus  v-for="menu in menus" :key="menu.code" :menuitem="menu"></submenus>
+		<submenus :mode='mode' v-for="menu in menus" :key="menu.code" :menuitem="menu"></submenus>
  		</el-menu>
- 		
-	</div>
 </template>
 
 <script type="text/javascript">
@@ -19,7 +16,7 @@
 	import Router from 'vue-router'
 	import ElementUI from 'element-ui'
 	import 'element-ui/lib/theme-chalk/index.css'
-	import submenus from '@/components/menus/SubMenus'
+	import submenus from '@/components/menus/horSubMenus'
 	Vue.use(ElementUI)
 	export default{
 		data(){
@@ -31,33 +28,43 @@
 			menus:{
 				type: Array,
 				required: true
+			},mode:{
+				type:String
 			}
 		},
 		methods:{
-			handleSelect(key, keyPathArr){
+			handleSelect(selectpath, keyPathArr){
 				//Router.push(keyPath);
 				//debugger
 				var router=this.$router;
-				const currentpath='/'+key;
 				var routes=router['history']['current'];
-				if(routes && routes['fullPath']!=currentpath){
-					this.$router.push(key);
-				}
-				//console.log(this.$router);
+				var currentPath=routes['fullPath'];
+				// if(routes && currentPath.indexOf(selectpath)==-1){
+				// 	this.$router.push(this.parseMenus(selectpath));
+				// }
+				this.$router.push(this.parseMenus(selectpath));
+				console.log(this.parseMenus(selectpath));
 				
-				
-				//console.log(keyPath);
 			},
-			parseMenus(menuparam){
-				var navmunu=menuparam;
-				for(var i=0;i<navmunu.length;i++){
-					if(navmunu[i].urltype=='1' || navmunu[i].urltype==1){
-						this.parseMenus(navmunu[i]['submenus']);
-					}
-					if(navmunu[i].urltype=='2' || navmunu[i].urltype==2){
-						this.$router.push(navmunu[i].url);
+			parseMenus(selectpath){
+				var routes=this.$router.options.routes;
+				return this.getRoutePath(routes,selectpath);
+			},
+			getRoutePath(routes,selectpath){
+				for(var i=0;i<routes.length;i++){
+					var parentPath=routes[i]['path'];
+					var childrenPath=routes[i]['children'];
+					if(parentPath && parentPath==selectpath){
+						return parentPath;
+					}else if(childrenPath && childrenPath.length>0){
+						var children=this.getRoutePath(childrenPath,selectpath);
+						if(children){
+							return parentPath+'/'+children;
+						}
+						return selectpath;
 					}
 				}
+				return null;
 			}
 		},
 		components:{

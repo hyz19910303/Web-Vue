@@ -5,6 +5,7 @@ var  menu=[{
 		"flag": "0",
 		"id": "06154526830444AC9534E356EB46C954",
 		"name": "系统管理",
+		"icon":'el-icon-setting',
 		"orderno": 1,
 		"submenus": [{
 				"code": "000004",
@@ -108,6 +109,7 @@ var  menu=[{
 		"flag": "0",
 		"id": "9912DB4E1BC742528E856662DDB4EC3F",
 		"name": "文件管理",
+		"icon":'el-icon-refresh',
 		"orderno": 2,
 		"submenus": [{
 				"code": "001001",
@@ -146,6 +148,7 @@ var  menu=[{
 		"flag": "0",
 		"id": "5DCC1E9A82C0493BA1A7CE95FEB92EC2",
 		"name": "历史数据",
+		"icon":'el-icon-menu',
 		"orderno": 3,
 		"submenus": [{
 				"code": "002010",
@@ -186,7 +189,7 @@ var  menu=[{
 					}
 				],
 				"url": "data/index",
-				"urltype": "1",
+				"urltype": "2",
 				"user_id": "BCCAD2E398FC4D2FB48CB9B7E6B46D8D"
 			}, {
 				"code": "002008",
@@ -265,6 +268,7 @@ var  menu=[{
 		"flag": "0",
 		"id": "B405760451FE41D8A600C5C5BD368508",
 		"name": "联调记录",
+		"icon":"el-icon-upload",
 		"orderno": 4,
 		"submenus": [{
 				"code": "004002",
@@ -303,6 +307,7 @@ var  menu=[{
 		"flag": "0",
 		"id": "C8BF6D5CC27441FA9246B41997974ABE",
 		"name": "增量数据",
+		"icon":"el-icon-sort",
 		"orderno": 4,
 		"submenus": [{
 				"code": "003001",
@@ -343,6 +348,7 @@ var  menu=[{
 		"id": "C486D90699654C32A6CA56A0E60691F6",
 		"name": "sql监控页面",
 		"orderno": 5,
+		"icon":"el-icon-search",
 		"submenus": [],
 		"url": "druid/sql.html",
 		"urltype": "2",

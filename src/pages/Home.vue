@@ -1,11 +1,44 @@
 <template>
 	<div>
-		<el-row>
-			<el-col >
-       	 		<navmenus :menus="menus"></navmenus>
-			</el-col>
-		</el-row>
-		<router-view/>
+		<el-container style=" border: 1px solid #fff">
+			<el-header style="text-align: right; font-size: 12px">
+		      <el-container direction="horizontal">
+		      	<navmenus v-if="mode=='horizontal'" :menus="menus" :mode="mode"></navmenus>
+		      	<div  class="setting">
+		      		<el-dropdown>
+				        <i class="el-icon-setting" style="margin-right: 15px"></i>
+				        <el-dropdown-menu slot="dropdown">
+				          <el-dropdown-item >查看</el-dropdown-item>
+				          <el-dropdown-item>新增</el-dropdown-item>
+				          <el-dropdown-item>删除</el-dropdown-item>
+				        </el-dropdown-menu>
+			      	</el-dropdown>
+			      <span @click="test()" style="cursor: pointer">王小虎</span>	
+		      	</div>
+		      </el-container >
+		         
+		    </el-header>
+		    <el-container>
+		    	 <el-container>
+		    	<el-aside width="200px" height="500px" style="background-color: rgb(238, 241, 246)">
+		    		<navmenus v-if="mode=='vertical'" :menus="menus" :mode="mode"></navmenus>
+			  	</el-aside>
+			   </el-container>
+			  <el-container>
+				    <el-main>
+				      <!-- <el-table :data="tableData">
+				        <el-table-column prop="date" label="日期" width="140">
+				        </el-table-column>
+				        <el-table-column prop="name" label="姓名" width="120">
+				        </el-table-column>
+				        <el-table-column prop="address" label="地址">
+				        </el-table-column>
+				      </el-table> -->
+				      <router-view/>
+				    </el-main>
+				  </el-container>
+				</el-container>
+		    </el-container>
 	</div>
 </template>
 <script type="text/javascript">
@@ -18,9 +51,15 @@
 	
 	export default{
 		data(){
+			const item = {
+			        date: '2016-05-02',
+			        name: '王小虎',
+			        address: '上海市普陀区金沙江路 1518 弄'
+				}
 			return{
-				data:[],
-				menus:menu
+				tableData:Array(10).fill(item),
+				menus:menu,
+				mode:'vertical'//horizontal || vertical
 			}
 		},
 		components:{
@@ -28,7 +67,13 @@
 		},
 		methods:{
 			test(){
-				alert(1)
+				debugger
+				if(this.mode=='vertical'){
+					this.mode='horizontal'
+				}else{
+					this.mode='vertical'
+				}
+				
 			}
 			
 		},
@@ -57,7 +102,7 @@
     border-radius: 4px;
   }
   .bg-purple-dark {
-    background: #99a9bf;
+    background: #fff;
   }
   .bg-purple {
     background: #d3dce6;
@@ -84,4 +129,21 @@
     font-size: 12px;
   }
 
+
+.el-header {
+    background-color: #409EFF;
+    color: #333;
+    line-height: 60px;
+  }
+  
+  .el-aside {
+    color: #409EFF;
+  }
+  .setting{
+  	float: right;
+  	right: 0px;
+  	margin-right: 30px;
+  	position: fixed;
+
+  }
 </style>
