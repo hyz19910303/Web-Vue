@@ -55,14 +55,14 @@ module.exports = {
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'static',//需要打包项目名称即tomcat下的文件夹
-    assetsPublicPath: '/',//js、css资源路径
+    assetsSubDirectory: 'static',//js、css资源路径  boot下 不需要设置
 
+    assetsPublicPath: '/',//需要打包项目名称即tomcat下的文件夹  boot下 不需要设置
     /**
      * Source Maps
      */
 
-    productionSourceMap: true,
+    productionSourceMap: true,//开发时默认true 发布false
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',
 
