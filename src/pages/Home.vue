@@ -64,7 +64,7 @@
 				}
 			return{
 				tableData:Array(10).fill(item),
-				menus:menu,
+				menus:[],
 				mode:'vertical'//horizontal || vertical
 				,isCollapse:false,
 				height:'400px',
@@ -90,7 +90,7 @@
 			},
 			showOrhideSubmenu(){
 				this.isCollapse=this.isCollapse?false:true;
-				debugger
+				
 				if(this.isCollapse){
 					//console.log(this.width);
 					this.width='100px';
@@ -101,15 +101,18 @@
 			
 		},
 		mounted(){
-			//this.menus=menu
-			// this.$http.get('/api/list?time=111').then(response=>{
-			// 	//console.log(response)
-			// 	if(response.ok){
-			// 		this.data=response.body
-			// 	}
-			// },error=>{
-			// 	//console.log(error)
-			// });	//alert(2)
+			// this.menus=menu
+			this.$http.get('/api/user/menus/40281f816630182a0166301844e0000f').then(response=>{
+				//console.log(response)
+				// debugger
+				if(response.ok){
+					this.menus=response.body.submenus
+				}else{
+					this.menus=menu
+				}
+			},error=>{
+				//console.log(error)
+			});	//alert(2)
 		}
 
 	}

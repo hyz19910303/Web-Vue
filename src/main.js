@@ -19,11 +19,11 @@ const routes=
 				component:home
 			},
 			{
-				path:'/home',
+				path:'/system/user/manager',
 				component:home,
 				children:[
 					{
-						path:'welcome/index',component:hello
+						path:'list',component:hello
 					},{
 						path:'druid/sql.html',component:baidu
 					}

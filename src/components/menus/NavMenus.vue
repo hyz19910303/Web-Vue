@@ -6,6 +6,7 @@
         text-color="#000000"
         style="border-bottom: inherit"
         :mode="mode?mode:horizontal"
+        :router="router"
         @select="handleSelect"
         :background-color="backgroundcolor?backgroundcolor:'#fff'"
         :collapse="mode=='vertical'?isCollapse:false"
@@ -24,7 +25,7 @@
 	export default{
 		data(){
 			return{
-
+				router:true
 			}
 		},
 		props:{
@@ -42,14 +43,14 @@
 		methods:{
 			handleSelect(selectpath, keyPathArr){
 				//Router.push(keyPath);
-				//debugger
+				// debugger
 				var router=this.$router;
 				var routes=router['history']['current'];
 				var currentPath=routes['fullPath'];
 				// if(routes && currentPath.indexOf(selectpath)==-1){
 				// 	this.$router.push(this.parseMenus(selectpath));
 				// }
-				this.$router.push(this.parseMenus(selectpath));
+				//this.$router.push(this.parseMenus(selectpath));
 				console.log(this.parseMenus(selectpath));
 				
 			},
