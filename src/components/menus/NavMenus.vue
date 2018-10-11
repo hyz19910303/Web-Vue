@@ -6,7 +6,7 @@
         text-color="#000000"
         style="border-bottom: inherit"
         :mode="mode?mode:horizontal"
-        :router="router"
+        
         @select="handleSelect"
         :background-color="backgroundcolor?backgroundcolor:'#fff'"
         :collapse="mode=='vertical'?isCollapse:false"
@@ -20,7 +20,7 @@
 	import Router from 'vue-router'
 	import ElementUI from 'element-ui'
 	import 'element-ui/lib/theme-chalk/index.css'
-	import submenus from '@/components/menus/horSubMenus'
+	import submenus from '@/components/menus/SubMenus'
 	Vue.use(ElementUI)
 	export default{
 		data(){
@@ -47,6 +47,8 @@
 				var router=this.$router;
 				var routes=router['history']['current'];
 				var currentPath=routes['fullPath'];
+
+				this.$router.push('/'+selectpath);
 				// if(routes && currentPath.indexOf(selectpath)==-1){
 				// 	this.$router.push(this.parseMenus(selectpath));
 				// }
