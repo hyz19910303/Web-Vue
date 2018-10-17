@@ -2,6 +2,7 @@
 	<el-table
     :data="tableData"
     :highlight-current-row=true
+    :height="450"
     style="width: 100%">
     <tableheader :headerData="headerData"></tableheader>
   </el-table>
