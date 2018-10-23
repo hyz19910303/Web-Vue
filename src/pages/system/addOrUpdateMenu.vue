@@ -1,5 +1,5 @@
 <template>
-	<el-dialog :title="title" top="10vh" :visible.sync="dialogUserFormVisible" @open="onOpen" :before-close="beforeClose">
+	<el-dialog :title="title" top="10vh" :visible.sync="dialogUserFormVisible" :open="onOpen" :before-close="beforeClose">
 	  <el-form :model="userform" ref="userform" :rules="userules" size="small" :status-icon="true">
 	    <el-form-item prop="user_name" label="用户名" :label-width="formLabelWidth">
 	      <el-input v-model="userform.user_name" autocomplete="off" value="userform.user_name"></el-input>

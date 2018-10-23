@@ -12,8 +12,19 @@
 		    <el-table-column prop="phono_number" label="联系方式" align="center"></el-table-column>
 		    <el-table-column label="操作" align="center">
 		    	<template slot-scope="scope">
-		    		<el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-        			<el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+		    		<!-- <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button> -->
+        			<!-- <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button> -->
+        			<el-dropdown @click="handleDropDownClick(scope.$index, scope.row)" split-button size="mini"   type="primary">
+						编辑
+						<el-dropdown-menu slot="dropdown">
+					     <el-dropdown-item command="edit">
+					     	<el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+					     </el-dropdown-item>
+					     <el-dropdown-item command="delete">
+					     	<el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+					     </el-dropdown-item>
+						</el-dropdown-menu>
+					</el-dropdown>
 		    	</template>
 		    </el-table-column>
 		  </el-table>
@@ -22,7 +33,7 @@
 	      @size-change="handleSizeChange"
 	      @current-change="handleCurrentChange"
 	      :current-page.sync="currentPage"
-	      :page-sizes="[3, 20, 50, 100]"
+	      :page-sizes="[10, 20, 50, 100]"
 	      :page-size="pageSize"
 	      layout="sizes, prev, pager, next"
 	      :page-count="pagecount">
@@ -42,7 +53,7 @@
 			return {
 				userList:[]
 				,currentPage:1
-				,pageSize:3
+				,pageSize:10
 				,pagecount:0
 				,dialogFormVisible:false
 			}
@@ -64,6 +75,9 @@
 				addOrUpdateUser.dialogUserFormVisible=true
 				addOrUpdateUser.title='修改用户信息'
 				addOrUpdateUser.userform=obj
+			},
+			handleDropDownClick:function(scope,obj, row){
+				this.handleEdit(scope,obj, row);
 			},
 			handleDelete:function(scope,obj, row){
 				this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
@@ -91,29 +105,31 @@
 		        });
 			},
 			handleSizeChange:function(pagesize){
+				var that=this;
 				const url='/api/user/list/?pageSize='+pagesize+'&pageNum='+(this.currentPage==1?0:this.currentPage)
 				this.$http.get(url).then(response=>{
-					if(response.ok){
-						const data=response.body;
-						this.userList=data.content
-						this.pagecount=data.totalPages
+					if(response.ok && response.body.success){
+						const userdata=response.body;
+						that.userList=userdata.data.content
+						that.pagecount=userdata.data.totalPages
 					}
 				})
 			},
 			handleCurrentChange:function(pagenum){
 				const url='/api/user/list/?pageSize='+this.pageSize+'&pageNum='+(pagenum-1)
+				var that=this;
 				this.$http.get(url).then(response=>{
-					if(response.ok){
-						const data=response.body;
-						this.userList=data.content
-						this.pagecount=data.totalPages
+					if(response.ok && response.body.success){
+						const userdata=response.body;
+						that.userList=userdata.data.content
+						that.pagecount=userdata.data.totalPages
 					}
 				})	
 			}
 		},
 		mounted:function(){
-			this.$http.get('/api/user/list/').then(response=>{
-				
+			const url='/api/user/list/?pageSize='+this.pageSize+'&pageNum='+(this.currentPage==1?0:this.currentPage)
+			this.$http.get(url).then(response=>{
 				if(response.ok && response.body.success){
 					const data=response.body.data;
 					this.userList=data.content
