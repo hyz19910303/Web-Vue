@@ -8,5 +8,10 @@ function remove(array,obj){
 	}
 
 }
-
-export default remove;
+function isArray(obj){
+	if(obj instanceof Array){
+		return true
+	}
+	return false
+}
+export  {remove ,isArray};

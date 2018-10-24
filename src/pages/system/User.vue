@@ -46,7 +46,7 @@
 	import Vue from 'vue'
 	import vueResource from 'vue-resource'
 	import addOrUpdateUser from './addOrUpdateUser'
-	import remove from '../../util/util'
+	import {remove} from '../../util/util'
 	Vue.use(vueResource)
 	export default{
 		data(){
@@ -65,16 +65,31 @@
 			addUser:function(callbackdata){
 				var addOrUpdateUser=this.$refs.addOrUpdateUser
 				addOrUpdateUser.dialogUserFormVisible=true
+				addOrUpdateUser.title="新增用户"
 				
 			},
 			addUserCallBack:function(obj){
-				this.userList.push(obj);
+				debugger
+				var inlist,index;
+				for(var i=0;i<this.userList.length;i++){
+					if(obj.user_id==this.userList[i].user_id){
+						inlist=true;
+						index=i;
+						break;
+					}
+				}
+				if(inlist){
+					this.userList[index]=obj;
+				}else{
+					this.userList.push(obj);
+				}
 			},
 			handleEdit:function(scope,obj, row){
+				let copy = JSON.parse(JSON.stringify(obj));
 				var addOrUpdateUser=this.$refs.addOrUpdateUser
 				addOrUpdateUser.dialogUserFormVisible=true
 				addOrUpdateUser.title='修改用户信息'
-				addOrUpdateUser.userform=obj
+				addOrUpdateUser.userform=copy
 			},
 			handleDropDownClick:function(scope,obj, row){
 				this.handleEdit(scope,obj, row);
@@ -88,7 +103,7 @@
 			         const url='/api/user/delete/'+obj.user_id
 			         this.$http.post(url).then((response)=>{
 			         	if(response.ok && response.body.success){
-			         		debugger
+			         		
 			         		remove(this.userList,obj);
 			         		this.$message({
 					            type: 'success',
@@ -97,7 +112,7 @@
 			         	}
 			         });
 		        }).catch((e) => {
-		        	debugger
+		        	
 		          this.$message({
 		            type: 'info',
 		            message: '已取消删除'

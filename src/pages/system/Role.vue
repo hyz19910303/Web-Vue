@@ -46,7 +46,7 @@
 	import Vue from 'vue'
 	import vueResource from 'vue-resource'
 	import addorUpdateRole from './addOrUpdateRole'
-	import remove from '../../util/util'
+	import {remove} from '../../util/util'
 	Vue.use(vueResource)
 	export default{
 		data(){

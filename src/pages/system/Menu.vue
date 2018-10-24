@@ -6,36 +6,43 @@
 		    :highlight-current-row=true
 		    :height="450"
 		    style="width: 100%">
-		    <el-table-column prop="user_name" label="用户名" align="center"></el-table-column>
-		    <el-table-column prop="real_name" label="真实名称" align="center"></el-table-column>
-		    <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
-		    <el-table-column prop="phono_number" label="联系方式" align="center"></el-table-column>
-		    <el-table-column label="操作" align="center">
+		    <el-table-column  label="序号" align="center">
 		    	<template slot-scope="scope">
-		    		<el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-        			<el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+		    		{{ scope.$index+1 }}
 		    	</template>
 		    </el-table-column>
+		    <treeTableColum
+				prop="menu_name"
+		        header-align="center"
+		        treeKey="menu_id"
+		        width="150"
+		        label="名称">
+		    </treeTableColum>
+		    <el-table-column prop="menu_url" label="URL" align="center"></el-table-column>
+		    <el-table-column prop="menu_icon" label="图标" align="center">
+		    	<template slot-scope="scope">
+		          <el-button  size="mini" :icon="scope.row.menu_icon || ''" circle></el-button>
+		        </template>
+		    </el-table-column>
+		    <el-table-column prop="menu_type" label="类型" align="center" >
+		    	<template slot-scope="scope">
+		          <el-tag v-if="scope.row.menu_type === '1'" size="small">目录</el-tag>
+		          <el-tag v-else-if="scope.row.menu_type === '2'" size="small" type="success">菜单</el-tag>
+		          <el-tag v-else-if="scope.row.menu_type === '3'" size="small" type="info">按钮</el-tag>
+		        </template>
+		    </el-table-column>
+		    <el-table-column prop="order_no" label="序号" align="center"></el-table-column>
 		  </el-table>
-		<el-pagination style="float: right"
-		  background
-	      @size-change="handleSizeChange"
-	      @current-change="handleCurrentChange"
-	      :current-page.sync="currentPage"
-	      :page-sizes="[3, 20, 50, 100]"
-	      :page-size="pageSize"
-	      layout="sizes, prev, pager, next"
-	      :page-count="pagecount">
-		</el-pagination>
-		<addOrUpdateUser ref="addOrUpdateUser"  @addUserCallBack="addUserCallBack"></addOrUpdateUser>
+		<addOrUpdateMenu ref="addOrUpdateMenu"  @addUserCallBack="addUserCallBack"></addOrUpdateMenu>
 	</div>
 </template>
 
 <script type="text/javascript">
 	import Vue from 'vue'
 	import vueResource from 'vue-resource'
-	import addOrUpdateUser from './addOrUpdateUser'
-	import remove from '../../util/util'
+	import treeTableColum from '@/components/table/TreeTableColumn'
+	import addOrUpdateMenu from './addOrUpdateMenu'
+	import {remove} from '../../util/util'
 	Vue.use(vueResource)
 	export default{
 		data(){
@@ -48,22 +55,22 @@
 			}
 		},
 		components:{
-			addOrUpdateUser//tableheader,tablele
+			addOrUpdateMenu,treeTableColum//tableheader,tablele
 		},
 		methods:{
 			addUser:function(callbackdata){
-				var addOrUpdateUser=this.$refs.addOrUpdateUser
-				addOrUpdateUser.dialogUserFormVisible=true
+				var addOrUpdateMenu=this.$refs.addOrUpdateMenu
+				addOrUpdateMenu.dialogMenuFormVisible=true
 				
 			},
 			addUserCallBack:function(obj){
 				this.userList.push(obj);
 			},
 			handleEdit:function(scope,obj, row){
-				var addOrUpdateUser=this.$refs.addOrUpdateUser
-				addOrUpdateUser.dialogUserFormVisible=true
-				addOrUpdateUser.title='修改用户信息'
-				addOrUpdateUser.userform=obj
+				var addOrUpdateMenu=this.$refs.addOrUpdateMenu
+				addOrUpdateMenu.dialogMenuFormVisible=true
+				addOrUpdateMenu.title='修改菜单信息'
+				addOrUpdateMenu.userform=obj
 			},
 			handleDelete:function(scope,obj, row){
 				this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
@@ -74,7 +81,6 @@
 			         const url='/api/user/delete/'+obj.user_id
 			         this.$http.post(url).then((response)=>{
 			         	if(response.ok && response.body.success){
-			         		debugger
 			         		remove(this.userList,obj);
 			         		this.$message({
 					            type: 'success',
@@ -83,43 +89,19 @@
 			         	}
 			         });
 		        }).catch((e) => {
-		        	debugger
 		          this.$message({
 		            type: 'info',
 		            message: '已取消删除'
 		          });          
 		        });
-			},
-			handleSizeChange:function(pagesize){
-				var that=this;
-				const url='/api/user/list/?pageSize='+pagesize+'&pageNum='+(this.currentPage==1?0:this.currentPage)
-				this.$http.get(url).then(response=>{
-					if(response.ok && response.body.success){
-						const userdata=response.body;
-						that.userList=userdata.data.content
-						that.pagecount=userdata.data.totalPages
-					}
-				})
-			},
-			handleCurrentChange:function(pagenum){
-				const url='/api/user/list/?pageSize='+this.pageSize+'&pageNum='+(pagenum-1)
-				var that=this;
-				this.$http.get(url).then(response=>{
-					if(response.ok && response.body.success){
-						const userdata=response.body;
-						that.userList=userdata.data.content
-						that.pagecount=userdata.data.totalPages
-					}
-				})	
 			}
+			
 		},
 		mounted:function(){
-			this.$http.get('/api/user/list/').then(response=>{
-				
-				if(response.ok && response.body.success){
-					const data=response.body.data;
-					this.userList=data.content
-					this.pagecount=data.totalPages
+			this.$http.get('/api/user/menus/'+this.userid).then(response=>{
+				if(response.ok){
+					// this.userList=[response.body]//response.body.submenus
+					this.userList=response.body.submenus
 				}
 			})
 		}

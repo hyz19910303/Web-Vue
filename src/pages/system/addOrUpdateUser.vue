@@ -1,5 +1,5 @@
 <template>
-	<el-dialog :title="title" top="10vh" :visible.sync="dialogUserFormVisible" @open="onOpen" :before-close="beforeClose">
+	<el-dialog :title="title" top="10vh" :visible.sync="dialogUserFormVisible" @close="close('userform')" :before-close="beforeClose">
 	  <el-form :model="userform" ref="userform" :rules="userules" size="small" :status-icon="true">
 	    <el-form-item prop="user_name" label="用户名" :label-width="formLabelWidth">
 	      <el-input v-model="userform.user_name" autocomplete="off" value="userform.user_name"></el-input>
@@ -85,8 +85,11 @@
 			// }
 		},
 		methods:{
-			onOpen:function(){
-				// this.userform
+			close:function(userform){
+				var model=this.$refs[userform].model;
+				for(var field in model){
+					model[field]='';
+				}
 			},
 			beforeClose:function(done){
 				
@@ -103,7 +106,7 @@
 						const url='/api/user/add/'
 						that.$http.post(url,JSON.stringify(fileds),{emulateJSON:true}).then(response=>{
 							var user=response.body.data;
-							//回调父组件  将user添加到列表里面 通过addUserToList方法
+							//回调父组件  将user添加到列表里面 通过addUserCallBack方法
 							that.$emit('addUserCallBack',user)
 							that.$message({
 					          message: '操作成功',
