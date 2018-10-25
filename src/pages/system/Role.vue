@@ -100,7 +100,7 @@
 		          cancelButtonText: '取消',
 		          type: 'warning'
 		        }).then(() => {
-			         const url='/api/role/delete/'+obj.role_id
+		        	 const url=this.$http.autoPrefix('role/delete/')+obj.role_id
 			         this.$http.post(url).then((response)=>{
 			         	if(response.ok && response.body.success){
 			         		remove(this.roleList,obj);
@@ -120,7 +120,7 @@
 			},
 			handleSizeChange:function(pagesize){
 				var that=this;
-				const url='/api/role/list/?pageSize='+pagesize+'&pageNum='+(this.currentPage==1?0:this.currentPage)
+				const url=this.$http.autoPrefix('role/list/')+'?pageSize='+pagesize+'&pageNum='+(this.currentPage==1?0:this.currentPage)
 				this.$http.get(url).then(response=>{
 					if(response.ok && response.body.success){
 						const roledata=response.body;
@@ -130,7 +130,7 @@
 				})
 			},
 			handleCurrentChange:function(pagenum){
-				const url='/api/role/list/?pageSize='+this.pageSize+'&pageNum='+(pagenum-1)
+				const url=this.$http.autoPrefix('role/list/')+'?pageSize='+this.pageSize+'&pageNum='+(pagenum-1)
 				var that=this;
 				this.$http.get(url).then(response=>{
 					if(response.ok && response.body.success){
@@ -142,7 +142,7 @@
 			}
 		},
 		mounted:function(){
-			const url='/api/role/list/?pageSize='+this.pageSize+'&pageNum='+(this.currentPage==1?0:this.currentPage)
+			const url=this.$http.autoPrefix('role/list/')+'?pageSize='+this.pageSize+'&pageNum='+(this.currentPage==1?0:this.currentPage)
 			this.$http.get(url).then(response=>{
 				if(response.ok && response.body.success){
 					const data=response.body.data;

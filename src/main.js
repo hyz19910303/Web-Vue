@@ -2,12 +2,15 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import router from './router/index'
+import http from './util/httpRequest'
 import App from './App'
 
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 Vue.prototype.userid='8a80e763665bb4b101665cb813550024'
+// Vue.prototype.$http=http
+Vue.http=http
 new Vue({
   el: '#app',
   router,

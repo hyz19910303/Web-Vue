@@ -32,7 +32,6 @@
 			   </el-container>
 			  <el-container>
 				    <el-main>
-				      <!-- <tablele :tableData="tableData3" :headerData="headerData"></tablele> -->
 				      <router-view/>
 				    </el-main>
 				  </el-container>
@@ -42,12 +41,12 @@
 </template>
 <script type="text/javascript">
 	import Vue from 'vue'
-	import vueResource from 'vue-resource'
+	// import vueResource from 'vue-resource'
 	import navmenus from '@/components/menus/NavMenus'
 	import tablele from '@/components/table/Table'
 	//模拟数据
 	import { menu } from '../data/menudata.js'
-	Vue.use(vueResource)
+	// Vue.use(vueResource)
 	
 	export default{
 		data(){
@@ -58,91 +57,6 @@
 				,isCollapse:false,
 				height:'400px',
 				width:'200px',
-
-				headerData:[
-					{
-						prop:'date',
-						label:'日期'
-					},{
-						label:'配送信息',
-						subheads:[
-							{
-								prop:'name',
-								label:'姓名',
-							},{
-								label:'地址',
-								subheads:
-								[
-									{
-										prop:'province',
-										label:'省份'
-									},
-									{
-										prop:'city',
-										label:'市区'
-									},
-									{
-										prop:'address',
-										label:'地址'
-									},{
-										prop:'zip',
-										label:'邮编'
-									}
-								]
-							}
-						]
-					}
-				],
-				tableData3: [{
-			          date: '2016-05-03',
-			          name: '王小虎',
-			          province: '上海',
-			          city: '普陀区',
-			          address: '上海市普陀区金沙江路 1518 弄',
-			          zip: 200333
-			        }, {
-			          date: '2016-05-02',
-			          name: '王小虎',
-			          province: '上海',
-			          city: '普陀区',
-			          address: '上海市普陀区金沙江路 1518 弄',
-			          zip: 200333
-			        }, {
-			          date: '2016-05-04',
-			          name: '王小虎',
-			          province: '上海',
-			          city: '普陀区',
-			          address: '上海市普陀区金沙江路 1518 弄',
-			          zip: 200333
-			        }, {
-			          date: '2016-05-01',
-			          name: '王小虎',
-			          province: '上海',
-			          city: '普陀区',
-			          address: '上海市普陀区金沙江路 1518 弄',
-			          zip: 200333
-			        }, {
-			          date: '2016-05-08',
-			          name: '王小虎',
-			          province: '上海',
-			          city: '普陀区',
-			          address: '上海市普陀区金沙江路 1518 弄',
-			          zip: 200333
-			        }, {
-			          date: '2016-05-06',
-			          name: '王小虎',
-			          province: '上海',
-			          city: '普陀区',
-			          address: '上海市普陀区金沙江路 1518 弄',
-			          zip: 200333
-			        }, {
-			          date: '2016-05-07',
-			          name: '王小虎',
-			          province: '上海',
-			          city: '普陀区',
-			          address: '上海市普陀区金沙江路 1518 弄',
-			          zip: 200333
-			        }]
 			}
 		},
 		// props:{
@@ -156,7 +70,6 @@
 		},
 		methods:{
 			test(){
-				
 				if(this.mode=='vertical'){
 					this.mode='horizontal'
 				}else{
@@ -166,7 +79,6 @@
 			},
 			handleCommand(){
 				// debugger
-				
 			},
 			showOrhideSubmenu(){
 				this.isCollapse=this.isCollapse?false:true;
@@ -181,20 +93,16 @@
 			
 		},
 		mounted(){
-			// this.menus=menu
-			// debugger
-			var a=this.userid
-			this.$http.get('/api/user/menus/'+this.userid).then(response=>{
-				//console.log(response)
-				// debugger
-				if(response.ok){
-					this.menus=response.body.submenus
+			var url=this.$http.autoPrefix('user/menus/');
+			this.$http.get(url+this.userid).then(response=>{
+				if(response.ok && response.body.success){
+					this.menus=response.body.data.submenus
 				}else{
 					this.menus=menu
 				}
 			},error=>{
 				//console.log(error)
-			});	//alert(2)
+			});	
 		}
 
 	}

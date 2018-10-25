@@ -79,7 +79,7 @@
 					if(valid){
 						var roleforms=that.$refs[roleform]
 						var fileds=roleforms.model;
-						const url='/api/role/add/'
+						const url=this.$http.autoPrefix('role/add/')
 						that.$http.post(url,JSON.stringify(fileds),{emulateJSON:true}).then(response=>{
 							var role=response.body.data;
 							//回调父组件  将user添加到列表里面 通过addUserToList方法

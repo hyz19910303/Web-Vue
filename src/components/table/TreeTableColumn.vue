@@ -60,7 +60,6 @@
           } else {
             data = this.removeChildNode(data, row[this.treeKey])
           }
-          debugger
           this.$parent.store.commit('setData', data)
           this.$nextTick(() => {
             this.$parent.doLayout()

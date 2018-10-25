@@ -1,10 +1,10 @@
 <template>
 	<div>
-		<el-button type="primary" @click="addUser" size="medium" style="margin-left: 100px" icon="el-icon-plus" round>添加</el-button>
+		<!-- <el-button type="primary" @click="addMenu" size="medium" style="margin-left: 100px" icon="el-icon-plus" round>添加</el-button> -->
 		<el-table
-		    :data="userList"
+		    :data="menuList"
 		    :highlight-current-row=true
-		    :height="450"
+		    :height="600"
 		    style="width: 100%">
 		    <el-table-column  label="序号" align="center">
 		    	<template slot-scope="scope">
@@ -19,7 +19,7 @@
 		        label="名称">
 		    </treeTableColum>
 		    <el-table-column prop="menu_url" label="URL" align="center"></el-table-column>
-		    <el-table-column prop="menu_icon" label="图标" align="center">
+		    <el-table-column  prop="menu_icon" label="图标" align="center">
 		    	<template slot-scope="scope">
 		          <el-button  size="mini" :icon="scope.row.menu_icon || ''" circle></el-button>
 		        </template>
@@ -32,22 +32,35 @@
 		        </template>
 		    </el-table-column>
 		    <el-table-column prop="order_no" label="序号" align="center"></el-table-column>
+		    <el-table-column label="操作" align="center">
+		    	<template slot-scope="scope">
+        			<el-dropdown @click="handleDropDownClick(scope.$index, scope.row)" split-button size="mini"   type="primary">
+						添加
+						<el-dropdown-menu slot="dropdown">
+					     <el-dropdown-item command="edit">
+					     	<el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+					     </el-dropdown-item>
+					     <el-dropdown-item command="delete">
+					     	<el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+					     </el-dropdown-item>
+						</el-dropdown-menu>
+					</el-dropdown>
+		    	</template>
+		    </el-table-column>
 		  </el-table>
-		<addOrUpdateMenu ref="addOrUpdateMenu"  @addUserCallBack="addUserCallBack"></addOrUpdateMenu>
+		<addOrUpdateMenu ref="addOrUpdateMenu"  @addMenuCallBack="addMenuCallBack"></addOrUpdateMenu>
 	</div>
 </template>
 
 <script type="text/javascript">
 	import Vue from 'vue'
-	import vueResource from 'vue-resource'
 	import treeTableColum from '@/components/table/TreeTableColumn'
 	import addOrUpdateMenu from './addOrUpdateMenu'
 	import {remove} from '../../util/util'
-	Vue.use(vueResource)
 	export default{
 		data(){
 			return {
-				userList:[]
+				menuList:[]
 				,currentPage:1
 				,pageSize:3
 				,pagecount:0
@@ -58,19 +71,27 @@
 			addOrUpdateMenu,treeTableColum//tableheader,tablele
 		},
 		methods:{
-			addUser:function(callbackdata){
+			addMenu:function(menu){
 				var addOrUpdateMenu=this.$refs.addOrUpdateMenu
 				addOrUpdateMenu.dialogMenuFormVisible=true
-				
+				addOrUpdateMenu.title="新增菜单"
+				addOrUpdateMenu.menuTreeData=this.menuList
 			},
-			addUserCallBack:function(obj){
-				this.userList.push(obj);
+			addMenuCallBack:function(obj){
+				//TODO
+				this.menuList.push(obj);
 			},
 			handleEdit:function(scope,obj, row){
+				let copy = JSON.parse(JSON.stringify(obj));
 				var addOrUpdateMenu=this.$refs.addOrUpdateMenu
 				addOrUpdateMenu.dialogMenuFormVisible=true
 				addOrUpdateMenu.title='修改菜单信息'
-				addOrUpdateMenu.userform=obj
+				addOrUpdateMenu.menuform=copy
+				addOrUpdateMenu.menuTreeData=this.menuList
+			},
+			handleDropDownClick:function(scope,obj, row){
+				// this.handleEdit(scope,obj, row);
+				this.addMenu(obj);
 			},
 			handleDelete:function(scope,obj, row){
 				this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
@@ -78,10 +99,10 @@
 		          cancelButtonText: '取消',
 		          type: 'warning'
 		        }).then(() => {
-			         const url='/api/user/delete/'+obj.user_id
+		        	 const url=this.$http.autoPrefix('menu/delete/')+obj.user_id;
 			         this.$http.post(url).then((response)=>{
 			         	if(response.ok && response.body.success){
-			         		remove(this.userList,obj);
+			         		remove(this.menuList,obj);
 			         		this.$message({
 					            type: 'success',
 					            message: '删除成功!'
@@ -98,10 +119,11 @@
 			
 		},
 		mounted:function(){
-			this.$http.get('/api/user/menus/'+this.userid).then(response=>{
-				if(response.ok){
-					// this.userList=[response.body]//response.body.submenus
-					this.userList=response.body.submenus
+			var url=this.$http.autoPrefix('user/menus/');
+			this.$http.get(url+this.userid).then(response=>{
+				if(response.ok && response.body.success){
+					this.menuList=[response.body.data]
+					// this.menuList=response.body.data.submenus
 				}
 			})
 		}

@@ -44,10 +44,10 @@
 
 <script type="text/javascript">
 	import Vue from 'vue'
-	import vueResource from 'vue-resource'
+	//import vueResource from 'vue-resource'
 	import addOrUpdateUser from './addOrUpdateUser'
 	import {remove} from '../../util/util'
-	Vue.use(vueResource)
+	// Vue.use(vueResource)
 	export default{
 		data(){
 			return {
@@ -69,7 +69,7 @@
 				
 			},
 			addUserCallBack:function(obj){
-				debugger
+				
 				var inlist,index;
 				for(var i=0;i<this.userList.length;i++){
 					if(obj.user_id==this.userList[i].user_id){
@@ -100,7 +100,7 @@
 		          cancelButtonText: '取消',
 		          type: 'warning'
 		        }).then(() => {
-			         const url='/api/user/delete/'+obj.user_id
+			         const url=this.$http.autoPrefix('user/delete/')+obj.user_id;
 			         this.$http.post(url).then((response)=>{
 			         	if(response.ok && response.body.success){
 			         		
@@ -121,7 +121,7 @@
 			},
 			handleSizeChange:function(pagesize){
 				var that=this;
-				const url='/api/user/list/?pageSize='+pagesize+'&pageNum='+(this.currentPage==1?0:this.currentPage)
+				const url=this.$http.autoPrefix('user/list/')+'?pageSize='+pagesize+'&pageNum='+(this.currentPage==1?0:this.currentPage)
 				this.$http.get(url).then(response=>{
 					if(response.ok && response.body.success){
 						const userdata=response.body;
@@ -131,7 +131,7 @@
 				})
 			},
 			handleCurrentChange:function(pagenum){
-				const url='/api/user/list/?pageSize='+this.pageSize+'&pageNum='+(pagenum-1)
+				const url=this.$http.autoPrefix('user/list/')+'?pageSize='+this.pageSize+'&pageNum='+(pagenum-1)
 				var that=this;
 				this.$http.get(url).then(response=>{
 					if(response.ok && response.body.success){
@@ -143,7 +143,7 @@
 			}
 		},
 		mounted:function(){
-			const url='/api/user/list/?pageSize='+this.pageSize+'&pageNum='+(this.currentPage==1?0:this.currentPage)
+			const url=this.$http.autoPrefix('user/list/')+'?pageSize='+this.pageSize+'&pageNum='+(this.currentPage==1?0:this.currentPage)
 			this.$http.get(url).then(response=>{
 				if(response.ok && response.body.success){
 					const data=response.body.data;

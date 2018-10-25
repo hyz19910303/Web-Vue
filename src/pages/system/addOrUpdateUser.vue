@@ -103,7 +103,7 @@
 					if(valid){
 						var userforms=that.$refs[userform]
 						var fileds=userforms.model;
-						const url='/api/user/add/'
+						const url=this.$http.autoPrefix('user/add/')
 						that.$http.post(url,JSON.stringify(fileds),{emulateJSON:true}).then(response=>{
 							var user=response.body.data;
 							//回调父组件  将user添加到列表里面 通过addUserCallBack方法
